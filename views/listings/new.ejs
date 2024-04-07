@@ -8,6 +8,17 @@
         <input type="text" name="listing[title]" placeholder="Worker Name" class="form-control" required>
         </div>
         <div class="mb-3">
+        <label for="Profession">Your Profession:</label>
+        <select name="listing[Profession]" id="Profession">
+            <option selected disabled>Select Your Profession</option>
+            <option value="Web Developer">Web Developer</option>
+            <option value="IT-Technician">IT-Technician</option>
+            <option value="Civil-Engineer">Civil-Engineer</option>
+            <option value="UI/UX Designer">UI/UX Designer</option>
+        </select>
+        </div>
+
+        <div class="mb-3">
         <label for="title" class="form-label">Description</label>
         <input type="text" name="listing[description]" placeholder="Write Description" class="form-control" required>
         </div>
@@ -31,7 +42,7 @@
         <label for="Country" class="form-label">Your Country</label>
         <input type="text" name="listing[country]" placeholder="Enter Your Preffred City" class="form-control" required>
         </div>
-        <button class="btn btn-dark">Register</button>
+        <button class="btn btn-dark  text-warning" role="status">Register</button>
     </form>
 
 </div>

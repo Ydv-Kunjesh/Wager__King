@@ -1,18 +1,7 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Worker Detail View</title>
-</head> -->
-
-
 <% layout("layouts/boilerplate") %>
 <script>
     const MAP_API = '<%= process.env.MAP_TOKEN %>'
-    const listing = <%- JSON.stringify(listing) %>
-    
-    
+    const listing = <%- JSON.stringify(listing) %>  
 </script>
 
     <div class="container" style="margin-bottom: 0px;">
@@ -31,15 +20,14 @@
     </div>
     <br>
     <div class="show-desc">
-    <li>Role: <%= listing.description %></li>
+    <li>Role: <%= listing.profession %></li>
     <li>Rate: &#x20B9;<%= listing.price.toLocaleString('en-IN') %></li>
+    <li>About Me: <%= listing.description %></li>
     <li>Location: <%= listing.location %></li>
     <li>Country: <%= listing.country %></li>
     <!-- <li>Owner: <%= listing.owner._id %></li> -->
-    
     </div>
     <br>
-    
     <button><a href="/listings/<%=listing._id%>/edit">Edit Your Detail</a></button>
     <form method="POST" action="/listings/<%= listing._id %>/delete?_method=DELETE"> 
         <br>
