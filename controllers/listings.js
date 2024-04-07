@@ -54,6 +54,7 @@ module.exports.addingNewListing = async (req, res, next) => {
     newListing.owner = req.user._id;
     newListing.image = { url, filename };
     newListing.geometry = response.body.features[0].geometry;
+    newListing.profession = req.body.listing.Profession
     saved_listing = await newListing.save();
     
     req.flash("success","Successfully created a new Member")
@@ -73,15 +74,20 @@ module.exports.editListingForm = async(req,res)=>{
 module.exports.updatingMemberDetail = async(req,res)=>{
     const id = req.params.id;
     let UserCheck = await Listing.findById(id);
-    
-   
     // console.log(url,filename,filenamedetail);
     const listing = await Listing.findByIdAndUpdate(id, req.body.listing);
         response = await geoCodingClient.forwardGeocode({
         query: `${req.body.listing.location}`,
         limit: 1
         }).send()
-        listing.geometry = response.body.features[0].geometry;
+    listing.geometry = response.body.features[0].geometry;
+    if (typeof req.body.listing.Profession !== 'undefined')
+    {
+            listing.profession = req.body.listing.Profession
+
+    }
+    // console.log(req.body.listing.Profession);
+    // listing.profession = req.body.listing.Profession;
     if(typeof req.file !== 'undefined'){
         const url = req.file.path;
         const filename = req.file.filename;

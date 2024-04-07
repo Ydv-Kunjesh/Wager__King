@@ -1,5 +1,6 @@
 
 require("dotenv").config()
+atlasDb = process.env.ATLAS_DB
 const express = require('express')
 const app = express()
 const mongo = require('mongoose')
@@ -12,8 +13,9 @@ const ejsMAte = require('ejs-mate');
 const wrapAsync = require("./jarurifiles/wrapAsync.js")
 const expressError = require("./jarurifiles/Errors.js")
 const {listingSchema ,ratingSchema} = require("./jarurifiles/schemaValidator.js");
-const { error } = require('console');
+const { error, log } = require('console');
 const session = require("express-session");
+const MongoDBStore = require("connect-mongo");
 const flash = require("connect-flash");
 const passport = require('passport');
 const Localstrategy = require("passport-local");
@@ -25,6 +27,7 @@ const Localstrategy = require("passport-local");
 const listingsRouter = require("./routes/listing.js")
 const reviewsRouter = require("./routes/reviews.js")
 const userRouter = require("./routes/user.js")
+const filterRouter = require('./routes/filter.js')
 
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"))
@@ -37,7 +40,18 @@ const listingController = require('./controllers/listings.js')
 
 
 //session setting and cookie  
+store = MongoDBStore.create({
+    mongoUrl: atlasDb,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: 'thisshouldbeabettersecret!'
+    }
+})
+store.on('error', function (e) {
+    console.log('SESSION STORE ERROR', e)
+})
 const sessionOptions = {
+    store: store,
     secret: 'thisshouldbeabettersecret!',
     resave: false,
     saveUninitialized: true,
@@ -48,7 +62,9 @@ const sessionOptions = {
     }
 
 };
+
 app.use(session(sessionOptions));
+
 //setting flash for auto notificatiuon
 app.use(flash());
 
@@ -63,8 +79,8 @@ passport.deserializeUser(User.deserializeUser());
 
 //connection
 // mongo.connect('mongodb://127.0.0.1:27017/Project').then((res)=>{console.log(`Database Connected`);}).catch((err)=>{console.log(err);})
-// atlas
-mongo.connect('mongodb+srv://wager_king:wager_king@wagerking.p45fclc.mongodb.net/project?retryWrites=true&w=majority&appName=wagerking')
+// // atlas
+mongo.connect(atlasDb)
 .then((res) => {
     console.log(`Database Connected`);
 })
@@ -84,6 +100,8 @@ app.use('/listings',listingsRouter);
 app.use('/listing',listingsRouter);
 app.use('/listings/:id/reviews', reviewsRouter)
 app.use('/', userRouter)
+app.use('/', filterRouter)
+
 // *************************************************************
 
 app.get("/",wrapAsync( listingController.index)) 
@@ -100,5 +118,5 @@ app.use((err,req,res,next)=>{
     // res.send(`Something went Wrong`)
 })
 app.listen(8080,()=>{
-    console.log(`Listening to port ${`8080`}`);
+    console.log(`Listening to port ${`8080`}`);   
 }) 

@@ -7,10 +7,53 @@
 </head> -->
 <% layout("layouts/boilerplate") %>
 
-<body>
+<style>
+#filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4rem;
+  margin-top: 1rem;
+ 
+}
+
+
+.filter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+   opacity: 0.5;  
+}
+
+.filter:hover {
+  opacity: 1;
+}
+.filter p{
+  font-size: 0.8rem;
+}
+</style>
+
+<div id="filters">
+  <div class="filter">
+    <div class="filter-icon"> <a href="/Web-Developers"><i class="fa-solid fa-fire"></i> </a></div>
+    <p>Web Developer</p>
+  </div>
+  <div class="filter">
+    <div class="filter-icon"> <a href="/IT-person"><i class="fa-solid fa-fire"></i> </a></div>
+    <p>IT-Technician</p>
+  </div>
+  <div class="filter">
+    <div class="filter-icon"> <a href="/UI-UX"><i class="fa-solid fa-palette"></i> </a></div>
+    <p>UI-Designer</p>
+  </div>
+  <div class="filter">
+    <div class="filter-icon"> <a href="/civilEngineer"><i class="fa-solid fa-hammer"></i> </a></div>
+    <p>Civil-Engineer</p>
+  </div>
+</div>
    
     
-    <h3>All Workers</h3>
+  
     <form method="GET" action="/listings/new">
         <!-- <button>New Worker</button> -->
     </form>
@@ -19,7 +62,7 @@
             <a href="/listings/<%=worker._id%>" class="worker-list">
             <div class="card" style="width: 20rem;">
                 <img class="card-img-top" src="<%=worker.image.url%>" alt="Worker Image" style="height: 20rem;" >
-                <div class="card-img-overlay">Workers</div>
+                <div class="card-img-overlay"><%=worker.description%></div>
                 <div class="card-body">
                   <p class="card-text">
                  <b><%= worker.title %> </b> <br />
@@ -39,5 +82,4 @@
             
         </ul>
     <% } %> --> 
-</body>
-<!-- </html> -->
+
